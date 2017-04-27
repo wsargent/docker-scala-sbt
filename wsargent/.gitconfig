@@ -1,0 +1,11 @@
+[core]
+	autocrlf = input
+	symlinks = true
+[user]
+	name = Will Sargent
+	email = will.sargent@gmail.com
+	signingkey = CD6970B72D00E5BE9A330EF3C1E8BF062BC6C4B7
+[push]
+	default = simple
+[commit]
+	gpgsign = true
