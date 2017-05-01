@@ -1,5 +1,8 @@
 FROM docker-scala-sbt:playframework
 
+USER $USER
+WORKDIR /home/$USER
+
 RUN hub clone --depth 1 https://github.com/playframework/playframework.git /tmp/playframework
 
 # We want to run the test suite and even if it fails, it's still an acceptable build.

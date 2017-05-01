@@ -66,15 +66,24 @@ If you can do that without SBT resolving anything, then you're good.
 
 * https://github.com/merofeev/docker-windows-volume-watcher
 
+### Prebuild m2 directory
+
+This may be a nicer solution which does not involve 15 minutes of rebuilding images.  I don't think it's quite as bad as he says, because you can layer Docker images on top of each other, so you'd typically do Scala / Akka / Play builds.
+
+* [Using a Volume for Maven, Gradle or sbt cache when compiling Java in a container](https://github.com/chanezon/docker-tips/blob/master/java-build-mount-maven-repo.md)
+
 ### Mounting .sbt directory in Docker
 
-* https://github.com/chanezon/docker-tips/blob/master/java-build-mount-maven-repo.md
-* https://codefresh.io/blog/node_docker_multistage/
+Possibly relevant:
+
 * https://flurdy.com/docs/docker/play-with-docker.html
 * http://blog.flurdy.com/2014/11/dont-download-internet-share-maven-ivy-docker.html
+
+Does not look quite so relevant, as it's a staged build:
+
 * http://blog.traintracks.io/monorepo-shared-code-and-isolated-fast-docker-builds/
 
-### More SBT Stuff
+### Using SBT with Artifactory
 
 * https://www.clever-cloud.com/blog/engineering/2013/11/30/set-up-sbt-for-proxy-use/
 * http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html#Proxying+Ivy+Repositories
