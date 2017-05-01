@@ -34,13 +34,12 @@ Once you have that up, then the Dockerfile will write to ~/.sbt/repositories wit
 
 ```
 ./build-docker.sh
-
 ```
 
 Then open up a shell:
 
 ```
-./run-docker.sh
+./run-playframework.sh
 ```
 
 and try to create a project:
