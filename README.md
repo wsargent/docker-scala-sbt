@@ -4,13 +4,9 @@ A docker file set up with a development environment such that you can run SBT ea
 
 This requires installing WSL and Docker for Windows, and then running through the tweaks necessary to make Docker happy.
 
+This is because SBT requires a bunch of cache resolution, even if you already have a warmed up Artifactory install, and so providing a pre-built Docker image lets you skip all of that.
+
 ## Installing
-
-Note that this depends on https://git-lfs.github.com/ for storing large files.
-
-```
-git lfs install
-```
 
 Install WSL, Docker for Windows and the integration (running Docker from inside a WSL prompt):
 
@@ -22,14 +18,40 @@ Install WSL, Docker for Windows and the integration (running Docker from inside 
 
 Set up Artifactory.  I did it on the host, you may have better luck running it in a docker container, where Docker can link to it more easily.
 
+Note that Artifactory 5 has the service installer broken on Windows 10, and you need to follow this video to install it:
+
+* [Install Artifactory 5 on Windows 10 as a service](https://www.youtube.com/watch?v=Lg4a6Sc_Xco)
+
+Artifactory has two things you need to worry about: remote repositories (which are things like Sonatype Releases, JCenter etc) and virtual repositories (which are composites of remote repositories).  You want to create all the Maven remote repositories and turn them into one Maven virtual repository.  Then you want to create all the Ivy virtual repositories and turn them into one Ivy virtual repository.  You do this through the admin interface.  
+
+If you're publishing to the Artifactory instance, I think you need different repositories for that, but I'm not sure.
+
+I don't remember the list of URLs that I put into artifactory -- I think I just spammed links until everything resolved.  The likely candidates are commented out in the relevant dockerfile, but there's also some scala-sbt repository I haven't been able to track down.
+
+Once you have that up, then the Dockerfile will write to ~/.sbt/repositories with the correct name and the correct IP address.  
+
 ## Running
 
 ```
 ./build-docker.sh
+
+```
+
+Then open up a shell:
+
+```
 ./run-docker.sh
 ```
 
-If SBT doesn't download anything, you did it right.
+and try to create a project:
+
+```
+sbt new playframework/play-scala-seed.g8 --name=test-project
+cd test-project
+sbt test
+```
+
+If you can do that without SBT resolving anything, then you're good.
 
 ## Further reading
 

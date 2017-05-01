@@ -1,5 +1,4 @@
-FROM base:latest
-
+FROM docker-scala-sbt:base
 
 ####################################
 # Install Java and dependencies

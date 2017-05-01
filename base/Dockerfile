@@ -26,6 +26,7 @@ RUN \
       mosh \
       rsync \
       locales \
+      less \
       apt-transport-https \
       ca-certificates \
       && rm -rf /var/lib/apt/lists/*

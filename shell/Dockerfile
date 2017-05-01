@@ -1,5 +1,18 @@
-ENV USER wsargent
+FROM docker-scala-sbt:sbt
+
+ARG USER
 ENV USERHOME /home/$USER
+
+# Set up gpg.conf
+RUN curl -s "https://sks-keyservers.net/sks-keyservers.netCA.pem" -o /etc/sks-keyservers.netCA.pem
+
+# Install hub
+ENV HUB_VERSION 2.2.9
+RUN \
+    wget https://github.com/github/hub/releases/download/v$HUB_VERSION/hub-linux-amd64-$HUB_VERSION.tgz && \
+    tar -xvzf hub-linux-amd64-$HUB_VERSION.tgz && \
+    hub-linux-amd64-$HUB_VERSION/install && \
+    rm -rf hub-linux-amd64-$HUB_VERSION.tgz hub-linux-amd64-$HUB_VERSION
 
 # Create userspace
 RUN \
@@ -10,17 +23,11 @@ RUN \
     echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER && \
     chmod 0440 /etc/sudoers.d/$USER
 
-RUN curl -s "https://sks-keyservers.net/sks-keyservers.netCA.pem" -o /etc/sks-keyservers.netCA.pem
-
 COPY .gnupg $USERHOME/.gnupg
-
-####################################
-# Install wsargent
-#FROM sbt AS wsargent
-
 COPY .gitconfig $USERHOME/.gitconfig
 RUN mkdir -p $USERHOME/.zsh/completions
 COPY _hub $USERHOME/.zsh/completions/_hub
+COPY .sbt $USERHOME/.sbt
 
 # Get antigen
 RUN git clone --depth 1 https://github.com/zsh-users/antigen.git $USERHOME/.antigen
@@ -31,15 +38,13 @@ COPY .zshrc $USERHOME/.zshrc
 COPY .zshenv $USERHOME/.zshenv
 
 RUN chown -R $USER:$USER $USERHOME
+RUN chmod og-rwx $USERHOME/.gnupg
 
 # Change user (Run respects USER, so everything is run with $USER context)
 USER $USER
 WORKDIR $USERHOME
 
-# Download all public keys as wsargent
-RUN curl https://keybase.io/will_sargent/pgp_keys.asc | gpg --import
-
-# Run antigen caching as wsargent
+# Run antigen caching as $USER
 RUN zsh -c 'source $USERHOME/.antigen/antigen.zsh && antigen init $USERHOME/.antigenrc && antigen cache-gen'
 
 # Assuming that you have Artifactory running on your host machine, we can connect to it through the host IP.

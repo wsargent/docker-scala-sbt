@@ -1,4 +1,4 @@
-FROM base:latest
+FROM docker-scala-sbt:shell
 
 ####################################
 # Install yubikey
@@ -20,3 +20,10 @@ RUN apt-get update && apt-get install -y \
 	yubikey-personalization \
 	yubico-piv-tool \
 	&& rm -rf /var/lib/apt/lists/*
+
+WORKDIR /root/
+
+COPY entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+CMD [ "ykpersonalize", "--help" ]
