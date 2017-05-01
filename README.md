@@ -30,16 +30,23 @@ I don't remember the list of URLs that I put into artifactory -- I think I just 
 
 Once you have that up, then the Dockerfile will write to ~/.sbt/repositories with the correct name and the correct IP address.  
 
-## Running
+## Building
+
+All the images are available under the images directory:
 
 ```
+cd images
 ./build-docker.sh
 ```
 
-Then open up a shell:
+## Running
+
+Using the scripts, all of the containers are transient (they are deleted as soon as they are shut down).  You should mount an external directory to your workspace so that you can save changes there.
+
+Open up a shell:
 
 ```
-./run-playframework.sh
+./bin/run-playframework.sh
 ```
 
 and try to create a project:
