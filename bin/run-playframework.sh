@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./run-container.sh playframework
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/run-container.sh playframework
