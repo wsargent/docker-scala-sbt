@@ -3,8 +3,7 @@
 # Run this against Docker to build all of the images needed.
 # It is idempotent, so running it again is harmless -- Docker will see everything is cached.
 
-# https://medium.com/software-development-stories/developing-a-dockerized-web-app-on-windows-subsystem-for-linux-wsl-61efec965080
-# But I keep forgetting and copying this anyway.
+## TODO need to set DOCKER_HOST=tcp://127.0.0.1:2375 conditionally if we are running under WSL
 
 # Build 'base' from a Debian install.
 docker build -t docker-scala-sbt:base base/
@@ -30,7 +29,7 @@ docker build \
 # Build 'scala' from 'wsargent' (runs "sbt new scala/hello-world.g8")
 docker build --build-arg USER=wsargent -t docker-scala-sbt:scala scala/
 
-# XXX Should technically do Akka builds here
+# XXX Should technically do Akka builds here?
 
 # Build 'playframework' from 'scala' (runs "sbt new playframework/play-scala-seed.g8")
 docker build --build-arg USER=wsargent -t docker-scala-sbt:playframework playframework/

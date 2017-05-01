@@ -22,13 +22,17 @@ Note that Artifactory 5 has the service installer broken on Windows 10, and you 
 
 * [Install Artifactory 5 on Windows 10 as a service](https://www.youtube.com/watch?v=Lg4a6Sc_Xco)
 
-Artifactory has two things you need to worry about: remote repositories (which are things like Sonatype Releases, JCenter etc) and virtual repositories (which are composites of remote repositories).  You want to create all the Maven remote repositories and turn them into one Maven virtual repository.  Then you want to create all the Ivy virtual repositories and turn them into one Ivy virtual repository.  You do this through the admin interface.  
+Artifactory has two things you need to worry about: remote repositories (which are things like Sonatype Releases, JCenter etc) and virtual repositories (which are composites of remote repositories).  You want to create all the Maven remote repositories and turn them into one Maven virtual repository.  Then you want to create all the Ivy virtual repositories and turn them into one Ivy virtual repository.  You do this through the admin interface.
+
+There's some [sbt documentation](http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html#Proxying+Ivy+Repositories) about the dangers of mixing maven and ivy repositories:
+
+> The most common mistake made when setting up a proxy repository for sbt is the attempting to merge both maven and ivy repositories into the same proxy repository. While some repository managers will allow this, it’s not recommended to do so.
 
 If you're publishing to the Artifactory instance, I think you need different repositories for that, but I'm not sure.
 
 I don't remember the list of URLs that I put into artifactory -- I think I just spammed links until everything resolved.  The likely candidates are commented out in the relevant dockerfile, but there's also some scala-sbt repository I haven't been able to track down.
 
-Once you have that up, then the Dockerfile will write to ~/.sbt/repositories with the correct name and the correct IP address.  
+Once you have that up, then the Dockerfile will write to ~/.sbt/repositories with the correct name and the correct IP address.  You will still need to set `-Dsbt.override.build.repos=true` to use the proxy, and then it completely replaces the resolution.
 
 ## Building
 
