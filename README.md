@@ -98,6 +98,7 @@ Does not look quite so relevant, as it's a staged build:
 
 * https://www.clever-cloud.com/blog/engineering/2013/11/30/set-up-sbt-for-proxy-use/
 * http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html#Proxying+Ivy+Repositories
+* https://gist.github.com/dwijnand/1bb53910730c38e7f03b
 
 ### Setting up Artifactory as a proxy for SBT
 
