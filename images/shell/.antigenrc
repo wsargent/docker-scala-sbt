@@ -4,6 +4,7 @@ antigen use oh-my-zsh
 
 antigen bundle git
 antigen bundle sbt
+antigen bundle gpg-agent
 antigen bundle command-not-found
 
 antigen bundle zsh-users/zsh-syntax-highlighting
