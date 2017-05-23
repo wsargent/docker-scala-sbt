@@ -13,3 +13,12 @@ sudo killall ssh-agent
 # note: eval is used because the produced STDOUT is a bunch of ENV settings
 eval $( gpg-agent --daemon --enable-ssh-support )
 ```
+
+Other options -- use keychain / ssh-init
+
+* http://www.funtoo.org/Keychain
+* https://github.com/ccontavalli/ssh-ident
+
+```
+alias ssh-agent='echo "Did you mean ssh-add? Do not run ssh-agent when using gpg-agent."; false'
+```
