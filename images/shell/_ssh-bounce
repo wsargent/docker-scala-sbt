@@ -1,0 +1,9 @@
+
+function ssh-bounce() {
+    pkill gpg-agent;
+    pkill ssh-agent;
+    eval $( gpg-agent --daemon --enable-ssh-support );
+    # in 2.1 it's the following;
+    # gpgconf --kill gpg-agent && gpgconf --launch gpg-agent;
+    ssh-add -L;
+}

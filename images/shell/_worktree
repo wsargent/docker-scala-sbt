@@ -1,0 +1,36 @@
+# Creates a working tree to check out a branch locally.
+# This is useful when you have multiple branches on origin,
+# and want to pull work work with them
+function worktree() {
+  # We assume we're always under $WORKDIR somewhere.
+  # Go down the tree until we know what project we're in.
+  while [[ "$(dirname "$PWD")" != $WORKDIR ]] ; do
+     find "$PWD"/ -maxdepth 1 "$@"
+     cd ..
+  done
+  BASEDIR=$PWD
+  BRANCHNAME=$1
+  cd $BASEDIR/master;
+
+  # Ensure we don't have stale trees around...
+  git worktree prune;
+
+  # Get fresh data from origin...
+  git fetch origin;
+
+  # Check for the presense of a local branch...
+  git rev-parse --verify $BRANCHNAME
+
+  # $? == 0 means local branch with <branch-name> exists.
+  if [[ $? == 0 ]]; then
+    # Create a worktree from the local branch.  If it already exists
+    # in another worktree, then this will die with error.
+    git worktree add $BASEDIR/$BRANCHNAME $BRANCHNAME;
+  else
+    # Create a local branch with the same name as origin, then create
+    # a worktree from it.
+    git worktree add -b $BRANCHNAME $BASEDIR/$BRANCHNAME master;
+  fi
+  cd $BASEDIR/$BRANCHNAME;
+}
+
